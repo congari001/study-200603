@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <script>
+            // 分割代入
+            {   // 配列
+                const ary = [3, 5];
+                const [a, b, c] = ary;
+                console.log(a, b, c); // 3 5 undefined
+            }
+            {   // 入れ子もいける
+                const ary = [3, [6, 9]];
+                const [a, b] = ary;
+                console.log(a, b); // 3 [6, 9]
+                const [c, [d, e]] = ary;
+                console.log(c, d, e); // 3 6 9
+            }
+            {   // オブジェクトはキーが対応したものが入る
+                const obj = {a: 3, b: 6};
+                const {b, c, a, d} = obj;
+                console.log(a, b, c, d); // 3 6 undefined undefined
+            }
+            {   // オブジェクトはデフォルト値も設定できる
+                const obj = {a: 3, b: 6};
+                const {a = 10, c = 10} = obj;
+                console.log(a, c); // 3 10
+            }
+            {   // 値の入れ替えもできる
+                let a = 3;
+                let b = 6;
+                [a, b] = [b, a];
+                console.log(a, b); // 6 3
+            }
+            {   // 引数にも使える
+                const sum = function({a, b}) {
+                    console.log('a='+a, 'b='+b, 'a+b='+(a+b));
+                }
+                const obj = {b:3, a:6};
+                sum(obj); // a=6 b=3 a+b=9
+            }
+            {   // 反復処理の変数展開
+                const ary = [
+                    {name: 'hoge', age: 10},
+                    {name: 'fuga', age: 12},
+                ];
+                for ({name} of ary) {
+                    console.log(name); //hoge huga
+                }
+            }
+            {   // 変数名の変更
+                const obj = {a: 3, b: 6};
+                const {a: anotherName} = obj;
+                console.log(anotherName); // 3 // aは作成されない
+            }
+            {   // オブジェクトのデフォルト値は関数もいける
+                const obj = {a: 3, b: 6};
+                const def = function() {
+                    return 10;
+                }
+                const {c = def()} = obj;
+                console.log(c); // 10
+            }
+            {   // プロパティが設定されてるなら関数自体が実行されない
+                const obj = {a: 3, b: 6};
+                const err = function() {
+                    console.log('定義されていないよ');
+                }
+                const {c = err()} = obj; // 定義されていないよ
+                const {b = err()} = obj;
+                console.log(b, c); // 6 undefined
+            }
+            // https://www.agent-grow.com/self20percent/2019/05/27/js-destructuring-assignment/
+            // 写経しました
+        </script>
+    </body>
+</html>
